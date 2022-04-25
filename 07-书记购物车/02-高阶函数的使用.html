@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>你好啊</h2>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    //看控制台
+    const message =['HELLO WORLD!','MICKEY','TOM AND JERRY'];
+    const message2=[32,765,4,839,44,29,60,37];
+    // 遍历：for in/for of/for循环
+    for( let m of message){
+      console.log(m);
+    }
+    //filter;必须有一个空数组来接收新数组
+    //filter括号内必须返回一个bool值，如果为true,函数内部就会将n加入到新的数组中。当为false时，内部会过滤掉这个n
+    let newm = message2.filter(function(n){
+      return n<=100;
+    })
+
+    //map：return的返回值将会作为新元素被添加到新数组中
+    console.log(newm);
+    let newm2=message2.map(function(n){
+      return n*2;
+    })
+    console.log(newm2);
+
+    let newm3=message2.reduce(function(prevalue,n){
+      return 
+    },0)
+
+  </script>
+</body>
+</html>

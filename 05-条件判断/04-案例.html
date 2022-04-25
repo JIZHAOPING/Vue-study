@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 1. -->
+  <!-- <div id="app">
+    <label v-if="type==='username'">用户登录</label>
+    <label v-else>邮箱登录</label>
+    <input type="text" :placeholder="inp">
+    <button @click="getlabel">点击切换</button>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        inp:'输入用户名',
+        type:'username'
+      },
+      methods:{
+        getlabel(){
+          this.type=this.type==='username'?'email':'username';
+          this.inp=this.type==='username'?'输入用户名':'输入邮箱'
+        }
+      }
+    })
+  </script> -->
+
+  
+  <!-- 2. -->
+  <!-- key的作用是防止输入框内的内容切换后被复用 -->
+  <div id="app">
+    <span v-if="isShow">
+      <label>用户登录</label>
+      <input type="text" placeholder="输入用户名" key='username'>
+    </span>
+    <span v-else>
+      <label>邮箱登录</label>
+      <input type="text" placeholder="输入邮箱" key='email'>
+    </span>
+    <button @click="isShow=!isShow">点击切换</button>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        isShow:true
+      }
+    })
+  </script>
+</body>
+</html>

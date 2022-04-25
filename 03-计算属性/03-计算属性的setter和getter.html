@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{fullname}}</h2>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        firstname:'Olive',
+        lastname:'Daunm'
+      },
+      computed:{
+        //computed里面每个属性都有set和get
+        //且计算属性一般没有set方法，set方法可以省略。那么get方法的名字也可省略
+        fullname:{
+          set:function(newvalue){
+            //如果在控制台执行'app.fullname='abc''那么newvalue会获取这个'abc'
+            const names = newvalue.split(' ');
+            this.firstname = names[0];
+            this.lastname = names[1]; 
+          },
+          get:function(){
+            return this.firstname+' '+this.lastname;
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- v-model只能用于表单控件 -->
+    <input type="text" v-model="message">
+    <h2>{{message}}</h2>
+    <!-- v-model的另一种写法 -->
+    <textarea :value="comment" @input="comment = $event.target.value"></textarea>
+    <h2>{{comment}}</h2>
+    <!-- 或者 。注意@input的函数不加括号 -->
+    <textarea :value="comment" @input="cvalue"></textarea>
+    <h2>{{comment}}</h2>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        comment:''
+      },
+      methods:{
+        cvalue(event){
+          this.comment = event.target.value
+        }
+      }
+    })
+  </script>
+</body>
+</html>

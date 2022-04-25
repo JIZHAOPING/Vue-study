@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #ab{
+    font-size:30px
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2 v-for="item in message">{{item}}</h2>
+    <button @click="message.push(`IT'S OK`)">在最后增加</button>
+    <button @click="message.unshift('TOMBOY')">在开始增加</button>
+    <button @click="message.pop()">在最后删除</button>
+    <button @click="message.shift()">在开始删除</button>
+    <br>
+    <br>
+    <button @click="message.splice(2,2)">splice在某处删除</button>
+    <button @click="message.splice(2,0,'YES OK!')">splice在某处插入</button>
+    <button @click="message.splice(3,1,'LALALAND')">splice改变某个值</button>
+    <button @click="message.splice(3,2,'APPLE','PEN')">splice改变某2个</button>
+    <br><br>
+    <button @click="btnclick">vue的方法改变某个值</button>
+    
+    <br>
+    <br>
+
+  <span v-for="item in message2" id="ab">{{item}}  </span>
+    <button @click="message2.sort()">sort排序</button>
+    <button @click="message2.reverse()">反转</button>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:['HELLO WORLD!','MICKEY','TOM AND JERRY'],
+        message2:['V','N','E','F','D','B','K','O','X','C']
+      },
+      methods:{
+        btnclick(){
+          Vue.set(this.message,2,'RNG');//vue开头字母要大写！！！
+        }
+      }
+    })
+  </script>
+</body>
+</html>

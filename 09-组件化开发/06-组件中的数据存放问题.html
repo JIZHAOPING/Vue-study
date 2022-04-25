@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <cpnc></cpnc>
+  </div>
+
+  <template id="tmp">
+    <div>
+      <!-- 组件中的变量title -->
+      <h2>{{title}}</h2>
+      <h2>I SAW THE CHILD BORN</h2>
+      <h3>INTO THE SUN</h3>
+      <h4>INTO THE MORNING SON</h4>
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+    Vue.component('cpnc',{
+      template:'#tmp',
+      data(){//不能像实例中写成一个对象，必须写成函数
+        return {//要返回一个对象
+          title:'hello world'
+        }
+      }
+    })
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <!-- key的作用：给每一个节点做一个唯一的标识，更好的更新虚拟DOM，效率更高 -->
+    <!-- 原理是key会使标签和key一一对应，类似链表，如若不用，当要插入一个值时，会像顺序表那样后面的元素会向后顺移 。-->
+    <!-- 在这里,key会让在虚拟DOM中找到插入位置直接插入，而不用在最后新建一个li将被插入位置以后的元素的位置都改变 -->
+    <ul>
+      <li v-for="item in message" :key="item">{{item}}</li>
+    </ul>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:['A','B','C','D','E']
+      }
+    })
+  </script>
+</body>
+</html>

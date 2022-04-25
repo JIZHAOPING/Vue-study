@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+
+    <!-- 3.使用组件 -->
+    <my-cpn></my-cpn>
+    <my-cpn></my-cpn>
+    <my-cpn></my-cpn>
+    <my-cpn></my-cpn>
+  </div>
+  
+  <script src="../js/vue.js"></script>
+  <script>
+    //1.创建组件构造器
+    //tempalte里面的代码必须用一个div括起来
+    //template在vue.2以后就不用了？？
+    const cpnc = Vue.extend({
+      template:`
+      <div>
+        <h3>HELLO WORLD!</h3>
+        <div>hhhhhhh</div>
+        <div>哈哈哈哈</div>
+      </div>
+      `
+    })
+    //2.注册组件：全局组件。全局组件可以在多个vue实例下使用
+    Vue.component('my-cpn',cpnc);
+
+
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      }
+    })
+  </script>
+</body>
+</html>

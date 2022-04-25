@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    tr{
+      height: 50px;
+      
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- <template> -->
+      <div v-if="isShow">
+      <!-- <div v-if="books.length"> 也可以 -->
+        <table align="center" border="1" cellspacing="0">
+          <tr style="background-color:#E5E4E2">
+            <th></th>
+            <th>书籍名称</th>   
+            <th>出版日期</th> 
+            <th>价格</th> 
+            <th>购买数量</th> 
+            <th>操作</th>
+          </tr>
+          <tr v-for="(item,index) in books">
+            <td>{{index+1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.time}}</td>
+            <!-- 过滤器的使用 -->
+            <td>{{item.price | showPrice}}</td>
+            <td>
+              <button @click="subtract(index)">-</button>
+              <!-- <button @click="subtract(index)" v-bind:disabled="item.count<=1">-</button> -->
+              {{item.count}}
+              <button @click="add(index)">+</button>
+            </td>
+            <td><button @click="del(index)">删除</button></td>
+          </tr>
+        </table>
+        <span>总价为{{totalprice | showPrice}}</span>
+      </div>
+        <span v-else>购物车为空！</span>
+    <!-- </template> -->
+    
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        isShow:true,
+        books:[
+          {id:110,name:'linux编程艺术',time:2010.1,price:126,option:'删除',count:1},
+          {id:111,name:'代码大全',time:2010.1,price:67,option:'删除',count:1},
+          {id:112,name:'深入理解计算机原理',time:2010.1,price:135,option:'删除',count:1},
+          {id:113,name:'现代操作系统',time:2010.1,price:159,option:'删除',count:1},
+        ]
+      },
+      computed:{
+        totalprice(){
+          let total = 0;
+          for(let p of this.books){
+            total+=p.count*p.price;
+          }
+          return total;
+        }
+      },
+      methods:{
+        add(index){
+          this.books[index].count++;
+        },
+        subtract(index){
+          if(this.books[index].count!=0){
+            this.books[index].count--;
+          }
+        },
+        del(index){//vue中有delete关键字，所以不能用delete
+          this.books.splice(index,1);
+          if(this.books.length==0){
+            this.isShow=false;
+          }
+        }
+      },
+      //过滤器
+      filters:{
+        showPrice(price){
+          return '￥'+price.toFixed(2);//保留两位小数
+        }
+      }
+    })
+  </script>
+</body>
+</html>

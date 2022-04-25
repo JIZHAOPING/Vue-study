@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 为什么不用font-size用fontSize？因为js变量不支持'-' -->
+    <h2 v-bind:style="{fontSize:'100px',color:yanse}">{{message}}</h2>
+    <h2 :style="getStyle()">{{message}}</h2>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:"Do you know me?",
+        yanse:'red',
+      },
+      methods:{
+        getStyle:function(){
+          return {fontSize:'100px',color:this.yanse};
+        }
+      }
+    })
+  </script>
+</body>
+</html>

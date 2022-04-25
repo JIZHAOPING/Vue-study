@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <!-- 1.没有参数 结果都是一样 -->
+    <button @click="btnclick1">按钮1</button>
+    <button @click="btnclick1()">按钮1</button>
+    <br/><br/>
+    <!-- 2.有参数但是省略了小括号 结果是vue将浏览器产生的event事件对象作为参数传入到方法 -->
+    <button @click="btnclick2">按钮2</button>
+    <!-- 2.省略参数，参数默认为undefined -->
+    <button @click="btnclick2()">按钮2</button>
+    <!-- 正常版本 -->
+    <button @click="btnclick2(123)">按钮2</button>
+    <br><br/>
+    <!-- 3.既需要参数，又需要event对象。 -->
+    <!-- 如何手动获取浏览器产生的event对象 -->
+    <button @click="btnclick3(123,$event)">按钮3</button>
+    
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      },
+      methods:{
+        btnclick1(){
+          console.log('---------')
+        },
+        btnclick2(abc){
+          console.log('+++++',abc);
+        },
+        btnclick3(abc,enent){
+          console.log('。。。。',abc,event)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

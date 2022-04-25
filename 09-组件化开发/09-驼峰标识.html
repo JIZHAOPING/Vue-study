@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 本节重点
+  在DOM中的属性不能使用驼峰标识，因为html不区分大小写
+  但是在js代码中可以 -->
+
+  <div id="app">
+    <h2>{{message}}</h2>
+    <!-- 这里用cInfo会报错 -->
+    <cpnc :cinfo="message"></cpnc>
+  </div>
+
+  <template id="tmp">
+    <div>     
+      {{cinfo}}
+      <h2>I SAW THE CHILD BORN</h2>
+      <h3>INTO THE SUN</h3>
+      <h4>INTO THE MORNING SON</h4>
+    </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script>
+    Vue.component('cpnc',{
+      template:'#tmp',
+      props:{
+        cinfo:String
+      }
+    })
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      }
+    })
+  </script>
+</body>
+</html>

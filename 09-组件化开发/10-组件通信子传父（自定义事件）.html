@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+
+    <!-- 省略参数，默认把item传过去 ,这不是像以前一样浏览器产生的事件-->
+    <cpn @itemclick="cpnclick"></cpn>
+  </div>
+
+  <template id="cp">
+    <div>
+      hello!!
+      <button v-for="item in cate" @click="btnclick(item)">
+        {{item.name}}
+      </button>
+    </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script>
+    //子组件
+    const cpn = {
+      template:'#cp',
+      data(){
+        return {
+          cate:[
+              {id:'aaa',name:'热门推荐'},
+              {id:'bbb',name:'生活用品'},
+              {id:'ccc',name:'家用电器'},
+              {id:'ddd',name:'美容美肤'}
+            ]
+        }
+      },
+      methods:{
+        btnclick(item){
+          //发射自定义事件
+          this.$emit('itemclick',item)
+        }
+      }
+    }
+    //app也可作为一个组件：根组件
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      },
+      components:{
+        cpn
+      },
+      methods:{
+        cpnclick(item){
+          console.log('cpnclick',item)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <!-- 模板1使用 -->
+    <cpnc></cpnc>
+    <!-- 模板2使用 -->
+    <cpnb></cpnb>
+  </div>
+
+  <!-- 模板1 注意模板要用div括起来 -->
+  <script type="text/x-template" id="tmp">
+    <div>
+      <h2>HELLO CHINA!</h2>
+      <h3>HELLO SHANDONG!</h3>
+      <h4>HELLO QINGDAO!</h4>
+    </div>
+  </script>
+
+  <!-- 模板2 -->
+  <template id="tmpt">
+    <div>
+      <h2>I SAW THE CHILD BORN</h2>
+      <h3>INTO THE SUN</h3>
+      <h4>INTO THE MORNING SON</h4>
+    </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script>
+    // 模板1注册
+    Vue.component('cpnc',{
+      template:'#tmp'
+    })
+
+    //模板2注册
+    Vue.component('cpnb',{
+      template:'#tmpt'
+    })
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      }
+    })
+  </script>
+</body>
+</html>

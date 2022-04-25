@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 当显示和隐藏切换频繁时，用v-show。反之用v-if。但是一般来说v-if用的比较多 -->
+
+    <!-- v-if:当isshow为false时,是直接不会存在 -->
+    <h2 v-if="isshow">{{message}}</h2>
+    <!-- v-show：当isshow为flase时是给这个主体加了一个style="display:none"的样式 -->
+    <h2 v-show="isshow">{{message}}</h2>
+    <button @click="show">是否显示</button>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        isshow:true
+      },
+      methods:{
+        show(){
+          this.isshow=!this.isshow;
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 传递 -->
+    <cpn :cm="message" :cmm="cmessage"></cpn>
+  </div>
+
+  <template id="tmp">
+    <div>
+      <h2>I SAW THE CHILD BORN</h2>
+      <h3>INTO THE SUN</h3>
+      <h4>INTO THE MORNING SON</h4>
+      <ul>
+        <!-- 使用 -->
+        <li v-for="item in cm">{{item}}</li>
+      </ul>
+      <h2>{{cmm}}</h2>
+    </div>
+  </template>
+
+
+  <script src="../js/vue.js"></script>
+  <script>
+    //子组件1
+    const cpn = {
+      template:'#tmp',
+      //1.props: ['cm','cmm']
+      props:{
+        cm:{
+          type:Array,//类型
+          // 类型也可为多种
+          // type:[Array,String]
+          default:[],//默认值
+          //类型为object/array时，默认值在低版本的vue必须为函数，否则会报错
+          // default(){
+          //   return []
+          // }
+          required:false//required代表是否必传的值
+        },
+        cmm:{
+          type:String,
+          default:'qqqqq',
+          required:true
+        }
+        //也可写验证函数
+        //也可自定义类型
+      }
+    }
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:['A','B','C','E','S'],
+        cmessage:'HELLO WOLRD'
+      },
+      components:{
+        cpn,
+      }
+    })
+  </script>
+</body>
+</html>

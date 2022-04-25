@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <h3>1.lazy:当回车或失去焦点后才会更新</h3>
+    <label>
+      <input type="text" v-model.lazy="m">
+      {{m}}
+    </label><br><br><hr>
+    <h3>2.number</h3>
+    <h3>第一种num始终为字符串类型</h3>
+    <input type="number" v-model="num">
+    <h3>{{typeof num}}</h3>
+    <h3>第二种num1输入数字以后就由string变为number</h3>
+    <input type="number" v-model.number="num1">
+    <h3>{{typeof num1}}</h3>
+    <br><hr>
+    <h3>3.trim:去掉开头空格
+      前一个字符串带空格，后一个不带
+    </h3>
+    <input type="text" v-model="tm">{{tm}}
+    <input type="text" v-model.trim="tm1">{{tm1}}
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        m:'',
+        num:'',
+        num1:'',
+        tm:'',
+        tm1:''
+      }
+    })
+  </script>
+</body>
+</html>

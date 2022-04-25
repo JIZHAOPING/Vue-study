@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <!-- 只显示value -->
+      <li v-for="item in info">{{item}}</li>
+      <!-- value和key都显示，且只能value在前 -->
+      <li v-for="(value,key) in info">{{value}}   {{key}}</li>
+      <!-- value key index都显示 -->
+      <li v-for="(value,key,index) in info">{{index+1}}.{{value}}   {{key}}</li>
+    </ul>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        info:{
+          name:'Olive Daunm',
+          age:27,
+          height:178
+        }
+      }
+    })
+  </script>
+</body>
+</html>

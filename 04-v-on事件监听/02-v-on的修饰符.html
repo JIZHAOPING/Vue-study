@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 1.阻止事件冒泡：只触发btnbutton不触发divbutton.注意要写在里面的那一层-->
+    <!-- 不是冒号是点！！！冒号的话只会触发div，起到了相反的作用 -->
+    <div id="one" @click="divclick">
+      aaaaaaa
+      <button @click:stop="btnclick">按钮</button>
+      <button @click.stop="btnclick">按钮</button>
+    </div>
+
+    <!-- 2.阻止默认事件 -->
+    <!-- 阻止表单默认提交 -->
+    <!-- action:提交后的网址后缀？是的 -->
+    <form action="00-模板.html">
+      <input type="submit" value="提交" @click.prevent="submitclick">
+    </form>
+
+    <!-- 3.监听键盘的某个按键 -->
+    <input type="text" name="" id="" @keyup="keyconsole">
+    <input type="text" name="" id="" @keyup.enter="keyconsole">
+    <input type="text" name="" id="" @keyup.13="keyconsole">
+
+    <!-- 监听组件:@click.native="" -->
+
+
+    <!-- 只进行一次回调:重复点击只会打印一次 -->
+    <button @click.once="btn2click">按钮2</button>
+
+
+
+    
+
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      },
+      methods:{
+        btnclick(){
+          console.log("您点击了按钮！");
+        },
+        divclick(){
+          console.log("您点击了div！");
+        },
+        submitclick(){
+          console.log("submit");
+        },
+        keyconsole(){
+          console.log("您按了键")
+        },
+        btn2click(){
+          console.log("您点击了按钮2！");
+        }
+      }
+    })
+  </script>
+</body>
+</html>

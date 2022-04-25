@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <!-- 显式关系绑定(for和id的值必须一样)for属性规定label与哪个表单元素绑定 -->
+    <!-- 隐式关系绑定(label标签中嵌入input标签来实现隐式关系绑定)
+    label标签不需要for属性,input标签也不需要id属性，
+    而是通过label标签中嵌入input标签来实现关系绑定,这种绑定关系是隐式关系绑定。 -->
+    <!-- 绑定之后，label里面就形成一个整体，点击文字也可勾选checkbox -->
+
+    <!-- 单选框 :true or false-->
+    <!-- v-model和isagree绑定 -->
+    <label for="agree">
+      <input type="checkbox" id="agree" v-model="isagree">同意协议
+    </label>
+    <h2>您选择的是：{{isagree}}</h2>
+
+    <!-- 多选框 -->
+    <!-- 一个label只能绑定一个input -->
+
+    <!-- <label for="hobby"> -->
+      <input type="checkbox" value="SWIM" v-model="hobbies">SWIM
+      <input type="checkbox" value="GAME" v-model="hobbies">GAME
+      <input type="checkbox" value="READ" v-model="hobbies">READ
+      <input type="checkbox" value="RIDE" v-model="hobbies">RIDE
+    <!-- </label> -->
+  <h2>您选择的是：{{hobbies}}</h2>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        isagree:false,
+        hobbies:[]
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <cpn :msg="message" :num1="number1" :num2="number2" ></cpn>
+  </div>
+  <template id="cpn">
+    <div>
+      <h2>props:{{msg}}</h2>
+      <h2>data:{{dmsg}}</h2>
+      <!-- <input type="text" v-model="dmsg"> -->
+      <!-- props里面的数据只能由父组件来修改 不能用v-model-->
+      <input type="text" :value="msg" @input="rtinput">
+    </div>
+  </template>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        number1:1,
+        number2:0
+      },
+      components:{
+        cpn:{
+          template:'#cpn',    
+          data(){//data改，props不改
+            return {
+              dnum1:this.num1,
+              dnum2:this.num2,
+              dmsg:this.msg
+            }
+          },
+          props:{
+            msg:String,
+            num1:Number,
+            num2:Number
+          },
+          methods:{
+            rtinput(event){
+              this.msg = event.target.value;
+              this.$emit('propchange')
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

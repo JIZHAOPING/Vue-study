@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>成绩</h2>
+    <input type="text" v-model="score">
+    <div>
+      您的等级为：
+      <span v-if="score>=90">优秀</span>
+      <span v-else-if="score>=80">良好</span>
+      <span v-else-if="score>=60">及格</span>
+      <span v-else>不及格</span>
+    </div>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!',
+        score:0
+      }
+    })
+  </script>
+</body>
+</html>

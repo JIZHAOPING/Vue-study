@@ -1,0 +1,15 @@
+{
+  "name": "wbpk",
+  "version": "1.0.0",
+  "description": "1. 全局安装（ 因为vue cli2依赖该版本）<br>\r      ``` npm install webpack@3.6.0 -g```",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "webpack": "^3.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{message}}</h2>
+    <cpnc></cpnc>
+    <cpnb></cpnb>
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+    //语法糖注册组件方式：全局组件:不用在实例中注册，直接使用即可
+    Vue.component('cpnc',{
+      template:`
+        <div>
+          hello world!!
+        </div>
+      `
+    })
+    
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'HELLO WORLD!'
+      },
+      //局部组件
+      components:{
+        'cpnb':{
+          template:`
+            <div>
+              HAVE FUN!!
+            </div>
+          `
+        }
+      }
+    })
+  </script>
+</body>
+</html>
