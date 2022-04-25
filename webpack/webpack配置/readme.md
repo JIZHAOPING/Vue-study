@@ -54,7 +54,7 @@ webpack.config.jsmodule.export={
 ```
 **3.用webpack打包，发现出错**
 
-![error](/webpack/webpack配置/img/微信图片_20220423204257.png)
+![error](img/error.png)
 
 webpack可以帮助我们获取当前项目的绝对路径.
 我们` const path = require("path")`来获取相对目录. 可是当前目录下没有path的包, path是node下东西, 需要通过`npm init`来初始化,会生成package.json文件
@@ -74,7 +74,7 @@ module.export={
 
 npm run build构建项目
 
-![pkg](img/微信图片_20220423211457.png)
+![pkg](img/packagejson.png)
 
 ***
 **tips**:
