@@ -33,18 +33,23 @@ module.exports={
             options: {
               // 当加载的图片，小于limit时会将图片编译成base64字符串形式
               //当加载的图片，大于limit时需要使用file-loader模块进行加载
-              limit: 13000,
+              // limit: 13000,
               name: 'img/[name].[hash:8].[ext]'
             }
           }
         ]
+      },
+      {
+        test: /\.vue$/,
+        use: ['vue-loader']
       }
     ]
   },
   resolve: {
+    // 可以省略扩展名， 比如引入vue文件'./vue/App.vue' 可以写成'./vue/App'
+    extensions: ['.js', '.css', '.vue'],
     // alias: 别名
-    // extensions: ['.js', '.css', '.vue'],
-    alias: {
+    alias: { 
     'vue$': 'vue/dist/vue.esm.js'
     }
   }

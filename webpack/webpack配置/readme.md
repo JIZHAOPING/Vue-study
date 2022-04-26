@@ -218,7 +218,8 @@ npm run build构建项目
     如果你仔细阅读webpack打包的js文件，发现写的ES6语法并没有转成ES5，那么就意味着可能一些对ES6还不支持的浏览器没有办法很好的运行我们的代码。
     在前面我们说过，如果希望将ES6的语法转成ES5，那么就需要使用babel。
     而在webpack中，我们直接使用babel对应的loader就可以了。
-* 安装：`npm install --save-dev babel-loader@7 babel-core babel-preset-es2015`
+* 安装：<br>
+    `npm install --save-dev babel-loader@7 babel-core babel-preset-es2015`
 * 配置webpack.config.js文件
     ```
     {
@@ -239,6 +240,7 @@ npm run build构建项目
     >后续项目中，我们会使用Vuejs进行开发，而且会以特殊的文件来组织vue的组件。<br>所以，下面我们来学习一下如何在我们的webpack环境中集成Vuejs.<br>现在，我们希望在项目中使用Vuejs，那么必然需要对其有依赖，所以需要先进行安装<br>
     **注：**因为我们后续是在实际项目中也会使用vue的，所以并不是开发时依赖,不用加-dev
 2. 安装：
+
     `npm install vue --save`
     安装完,node_modules就会增加一个vue文件夹
 3. 配置webpack.config.js
@@ -252,7 +254,8 @@ npm run build构建项目
     }
     ```
 3. 使用
-    **main.js**
+
+    main.js
     ```
     import Vue from 'vue'
     new Vue({
@@ -262,7 +265,7 @@ npm run build构建项目
         }
     })
     ```
-    **index.html**
+    index.html
     ```
     <div id = "app">
         {{message}}
@@ -270,37 +273,130 @@ npm run build构建项目
     ```
 3. 打包
 
+3. **el和template的关系**
+* 如果希望将data中的数据显示在界面中，就必须是修改index.html
+    但是html模板在之后的开发中，并不希望手动的来频繁修改。
+    * 如果Vue实例中同时指定了template，那么template模板的内容会替换掉挂载的对应el的模板。
+        这样做之后就不需要在以后的开发中再次操作index.html，只需要在template中写入对应的标签即可
+
+    main.js
+    ```
+    import Vue from 'vue'
+    new Vue({
+        el:'#app',
+        template:`
+            <div>
+                <h3>{{message}}</h3>
+                <button @click= "btnClick">按钮</button>
+                <h3>{{name}}</h3>
+            </div>
+        `,
+        data:{
+            message:'hello Vue.js!!!',
+            name:'ERIC'
+        },
+        methods:{
+            tnClick(){
+                console.log("I LOVE ERIC SO MUCH!")
+            }
+        }
+    })
+    ```
+**7. Vue组件化开发：.vue文件封装处理**
+* 组件目录
+    > src<br>
+    > |--vue<br>
+    > &emsp;&emsp;|--app.vue<br>
+    > &emsp;&emsp;|--cpn.vue<br>
+    > |--main.js<br>
+    > index.html<br>
+
+1. 安装vue-loader和vue-template-compiler <br>
+    vue-loader（加载）以及vue-template-compiler（编译）
+    `npm install vue-loader vue-template-compiler --save-dev`
+2. 修改webpack.config.js
+    ```
+    rules:[
+        {
+            test: /\.vue$/,
+            use: ['vue-loader']
+        }
+    ]
+    ```
+3. 使用
+
+    app.vue
+    ```
+    <template>
+    </template>
+
+    <script>
+        export default {
+
+        }   
+    </script>
+
+    <style scoped></style>
+    ```
+    main.js
+    ```
+    import App from './vue/app'
+
+    new Vue({
+        el:'#app',
+        template:'<App/>',
+        components:{
+            App
+        }
+    })
+    ```
+3. 打包。报错的话，可能是版本的问题
+    可以在package.json里修改一下版本号,然后重新npm install一下
+
+
+
+
+
 
 ***
 **tips**:
->~~1. markdown图片不显示~~
 
-~~解：图片标题不要用中文~~
->2. *git add .*  出现错误  **The file will have its original line endings in your working directory.**  解决方案
+~~1. markdown图片不显示~~
 
-解：`git config core.autocrlf false`
->3. *git push* 出现错误 **warning TLS certificate verification has been disabled!**
+>~~解：图片标题不要用中文~~
+1. *git add .*  出现错误  **The file will have its original line endings in your working directory.**  
 
-解：`git config --global http.sslVerify true`
+    >解：`git config core.autocrlf false`
+2. *git push* 出现错误 **warning TLS certificate verification has been disabled!**
 
->4. css-loader运行时报错**Module build failed: TypeError: this.getOptions is not a function**
+    >解：`git config --global http.sslVerify true`
 
-解：版本问题。**重新下载**或者直接修改package.json
-```
-"devDependencies": {
-    "css-loader": "^2.1.1",
-    "style-loader": "^2.0.0",
-    "webpack": "^3.6.0",
-  }
-```
->5. 配置好vue打包出错：**Can't resolve 'vue' in...**
-解：版本问题。
->6. 打包完图片不显示且报错：**Failed to load resource: net::ERR_FILE_NOT_FOUND**
-解：pubilcPath:'dist/'
+3. css-loader运行时报错**Module build failed: TypeError: this.getOptions is not a function**
 
+    >解：版本问题。**重新下载**或者直接修改package.json
 
+    ```
+    "devDependencies": {
+        "css-loader": "^2.1.1",
+        "style-loader": "^2.0.0",
+        "webpack": "^3.6.0",
+    }
+    ```
+4. 配置好vue打包出错：**Can't resolve 'vue' in...**
 
+    >解：版本问题。
+5. 打包完图片不显示且报错：**Failed to load resource: net::ERR_FILE_NOT_FOUND**
 
+    >解：pubilcPath:'dist/'
 
+6. 在template里面插入图片报错:
 
-    
+    >解：图片地址错误。应该用index.html的相对路径而不是main.js
+
+7. <styly scope>中scope是什么意思
+
+    >解：在VUE组件中，为了让样式私有化，不对全局造成污染，可以在style标签上添加scoped属性以表示它的只属于当下的模块。<br>
+    但是这样的话，就会导致无法修改其他第三方组件样式，或者是内嵌的样式，解决方案应该为，保持原来的`<style scope>`不变，增加一个新`<style></style>`
+
+8. vue组件化终极版本打包报错：**Vue packages version mismatch:**
+    >解：需要让vue和vue-template-compiler版本相同。
