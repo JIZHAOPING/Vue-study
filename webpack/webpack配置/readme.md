@@ -354,9 +354,126 @@ npm run build构建项目
     可以在package.json里修改一下版本号,然后重新npm install一下
 
 
+**8. plugin的使用**
+### 添加版权的plugin
+> 该插件名字叫BannerPlugin，属于webpack自带的插件
+1. 修改webpack.config.js
+    ```
+    const webpack = require('webpack')
+    module.exports = {
+        ···
+        plugins:[
+            new webpack.BannerPlugin('最终版权归JZP所有')
+        ]
+    }
+    ```
+2. 重新打包。查看bundle.js的头部。
+### 打包html的plugin
+1. HtmlWebpackPlugin插件可以为我们做这些事情：<br>
+    * 自动生成一个index.html文件(可以指定模板来生成)<br>
+    * 将打包的js文件，自动通过script标签插入到body中
 
+2. 安装HtmlWebpackPlugin插件<br>
+    `npm install html-webpack-plugin --save-dev`
 
+3.  使用插件，修改webpack.config.js文件中plugins部分的内容如下：
+    + 这里的template表示根据什么模板来生成index.html
+    + 另外，我们需要删除之前在output中添加的publicPath属性 否则插入的script标签中的src可能会有问题
+    ```
+    const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+    module.exports = {
+        ···
+        plugins:[
+            new webpack.BannerPlugin('最终版权归JZP所有'),
+            new htmlWebpackPlugin({
+                template:'index.html'
+            })
+        ]
+    }
+    ```
+4. 报错：Cannot read property 'initialize' of undefined
+    > HtmlWebpackPlugin插件版本太高了，将HtmlWebpackPlugin版本设置为2.0.0
+    ```
+    package.json
+    "devDependencies":{
+        ···
+        "html-webpack-plugin":"^2.0.0"
+        ···
+    }
+    ```
+    然后再npm install
+    
+### 压缩js的plugin
+* 在项目发布之前，我们必然需要对js等文件进行压缩处理
+    * 这里，我们就对打包的js文件进行压缩
+    * 我们使用一个第三方的插件uglifyjs-webpack-plugin，并且版本号指定1.1.1，和CLI2保持一致
+1. 安装<br>
+    `npm install uglifyjs-webpack-plugin@1.1.1 --save-dev`
+2. 修改webpack.config.js
+    ```
+    const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+    module.exports = {
+        ···
+        plugins:[
+            ···
+            new UglifyjsWebpackPlugin()
+        ]
+    }
+    ```
+3. 打包
+
+## webpack配置文件的分离
+1. 准备
+    * webpack根据开发和生成环境一般可以将配置文件拆分，拆分dev和prod两种环境
+    * 我们在根目录下创建build文件夹，并创建三个配置文件，分别是：
+        ```
+        |- /build
+            |- base.config.js  公共配置
+            |- dev.config.js   开发配置
+            |- prod.config.js  生产配置
+        ```
+2. 在scripts里修改相应的命令
+    ```
+    "build": "webpack --config ./build/prod.config.js",
+    "dev": "webpack-dev-server --open --config ./build/dev.config.js"
+    ```
+3. 使用webpack-merge,用以合并通用配置文件与开发环境配置文件
+    * webpack-merge做了两件事：它允许连接数组并合并对象，而不是覆盖组合
+    * 安装：`npm install webpack-merge --save-dev`
+
+4. 各文件代码
+    * base.config.js
+        ```
+        和webpack.config.js一样
+        但是只有版权和html的plugin
+        ```
+    * dev.config.js
+        ```
+        // 开发环境下的配置文件
+        const webpackMerge = require('webpack-merge')
+        const baseConfig = require('./base.config')
+ 
+        module.exports = webpackMerge(baseConfig, {
+            devServer: {
+                contentBase: './dist',
+                inline: true
+            }
+        })
+        ```
+    * prod.config.js
+        ```
+        // 生产环境下的配置文件
+        const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
+        const webpackMerge = require('webpack-merge')
+        const baseConfig = require('./base.config')
+ 
+        module.exports = webpackMerge(baseConfig, {
+            plugins: [
+                new UglifyjsWebpackPlugin()
+            ]
+        })
+        ```
 
 ***
 **tips**:
