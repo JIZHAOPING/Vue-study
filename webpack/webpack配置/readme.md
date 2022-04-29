@@ -423,57 +423,145 @@ npm run build构建项目
     ```
 3. 打包
 
+## 本地服务器
+* 搭建本地服务器
+    * webpack提供了一个可选的本地开发服务器，这个本地服务器基于node.js搭建，内部使用express框架，可以实现我们想要的让浏览器自动刷新显示我们修改后的结果。
+    * 不过它是一个单独的模块，在webpack中使用之前需要先安装它
+1. 安装<br>
+    `npm install --save-dev webpack-dev-server@2.9.1`<br>
+    1. --save-dev: 本地服务只有在开发环境的时候才会使用, 所以, 我们以dev模式安装, 打包的时候不会被打包
+    2. webpack-dev-server@2.9.1: 这个版本是Vue2对应的版本.
+2. 配置
+    ```
+    webpack.config.js
+    ···
+    devServer:{
+        contentBase:"./dist",
+        inline:true
+    }
+    ···
+    
+        * contentBase:为哪一个文件夹提供本地服务，默认是根文件夹
+        * port:端口号
+        * inline:页面实时刷新
+        * historyApiFallback:在SPA页面中。依赖HTML5的history模式
+
+    ```
+    ```
+    package.json
+    ···
+    "scripts":{
+        ···
+        //将本地服务交由webpack来管理
+        //--open表示直接打开浏览器
+        "dev":"webpack-dev-server --open" 
+    }
+    ···
+    ```
+3. 启动服务<br>
+
+    `npm run dev`
+
 ## webpack配置文件的分离
 1. 准备
     * webpack根据开发和生成环境一般可以将配置文件拆分，拆分dev和prod两种环境
     * 我们在根目录下创建build文件夹，并创建三个配置文件，分别是：
         ```
         |- /build
-            |- base.config.js  公共配置
-            |- dev.config.js   开发配置
-            |- prod.config.js  生产配置
+            |- base.config.js  公共部分的配置
+            |- dev.config.js   开发环境的配置
+            |- prod.config.js  生产配置：需要构建的部分
         ```
-2. 在scripts里修改相应的命令
-    ```
-    "build": "webpack --config ./build/prod.config.js",
-    "dev": "webpack-dev-server --open --config ./build/dev.config.js"
-    ```
-3. 使用webpack-merge,用以合并通用配置文件与开发环境配置文件
-    * webpack-merge做了两件事：它允许连接数组并合并对象，而不是覆盖组合
-    * 安装：`npm install webpack-merge --save-dev`
 
-4. 各文件代码
+
+
+2. 各文件代码
     * base.config.js
         ```
         和webpack.config.js一样
-        但是只有版权和html的plugin
         ```
     * dev.config.js
         ```
         // 开发环境下的配置文件
-        const webpackMerge = require('webpack-merge')
-        const baseConfig = require('./base.config')
- 
-        module.exports = webpackMerge(baseConfig, {
+        module.exports={
             devServer: {
-                contentBase: './dist',
+                contentBase: "./dist",
                 inline: true
             }
-        })
+        }
         ```
     * prod.config.js
         ```
         // 生产环境下的配置文件
         const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
-        const webpackMerge = require('webpack-merge')
-        const baseConfig = require('./base.config')
- 
         module.exports = webpackMerge(baseConfig, {
             plugins: [
                 new UglifyjsWebpackPlugin()
             ]
         })
         ```
+3. 那么, 导入配置的时候, 如何将其合并呢?
+    使用webpack-merge,用以合并通用配置文件与开发环境配置文件
+    * webpack-merge做了两件事：它允许连接数组并合并对象，而不是覆盖组合
+    * 安装：`npm install webpack-merge --save-dev`
+    * 然后在dev.config.js和prod.config.js中引入base.config.js
+4. 文件变化
+    
+    ```
+    dev.config.js
+
+    const webpackMerge = require("webpack-merge")//++
+    const baseconfig = require("./base.config")//++
+    module.exports = webpackMerge(baseconfig, {//*****
+        devServer: {
+            contentBase: "./dist",
+            inline: true
+        }
+    })
+    ```
+    ```
+    prod.config.js
+    const UglifyJsWebpackPlugin = require("uglifyjs-webpack-plugin")
+    const webpackMerge = require("webpack-merge")//++
+    const baseConfig = require("./base.config") //++
+    module.exports = webpackMerge(baseConfig, { //***
+        plugins: [
+            // 压缩js文件--开发阶段, 不要压缩
+            new UglifyJsWebpackPlugin()
+        ]
+    })
+    ```
+5. 然后修改输出文件的路径
+    ```
+    base.config.js
+    module.exports={
+        // 入口
+        entry: "./src/main.js",
+        output: {
+            path: path.resolve(__dirname, '../dist'),//****
+            filename: "bundle.js",
+            //publicPath:"dist/"
+        },
+    ....
+    }
+    ```
+6. 在scripts里修改相应的命令
+    ```
+    package.json
+    ···
+    "build": "webpack --config ./build/prod.config.js",
+    "dev": "webpack-dev-server --open --config ./build/dev.config.js"
+    ```
+7. 删除webpack.config.js
+8. 构建项目并运行<br>
+    构建<br>
+    `npm run build`
+    <br>
+    运行<br>
+    `npm run dev`
+
+
+
 
 ***
 **tips**:

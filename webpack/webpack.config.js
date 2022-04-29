@@ -4,6 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports={
   entry: './src/main.js',
+  devServer:{
+    contentBase:"./dist",
+    inline:true //页面实时刷新
+  },
   output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js',//不能加‘/’.加上就不是相对路径了
