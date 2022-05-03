@@ -93,3 +93,141 @@
   2. vue-cli 3 的设计原则是“0配置”，移除的配置文件根目录下的，build和config等目录
   3. vue-cli 3 提供了 vue ui 命令，提供了可视化配置，更加人性化
   4. 移除了static文件夹，新增了public文件夹，并且index.html移动到public中 
+  ### 2. 使用Vue-CLI3
+  1. 创建<br>
+  `vue create 项目名称`
+  2. 创建过程
+
+      ```
+      ?Please pick a preset://选择一个配置 Manually     select feature: 手动选择特->Manually select     feature: 手动选择特性
+      ?Where do you prefer placing config forBabel,     ESLint, etc.? (Use arrow keys): // 置文件放在   那里呢? //选择独立文件
+      ?Save this as a preset for future projects?(y/    N) //是否将刚刚的配置保存到项目中? 是。样以后搭   建项目就可以选这个配置
+      Save preset as: //保存上面的配置的文件名是 么?
+      ```
+
+      > 如果我们设置了很多自定义配置,如何取消呢?<br>
+      在/Users/用户名/.vuerc, 修改这个文件.里面有个选项是presets. 下面就是我们保存的设置.
+
+  3. 目录结构
+    ![content](./img/20200521075848812.png)
+
+  ### 配置文件管理
+  1. 法一：使用vue UI配置界面修改
+     * 安装vue UI界面管理<br> `vue ui`
+  2. 法二：在node_module模块中查看配置
+     + node_module->@vue->cli-service->**webpack.config.js**
+
+  3. 法三：自定义需要修改的配置文件
+      > 在根目录下新建一个文件vue.config.js. 这个文件名是固定的, 不可修改.
+      ```
+      module.exports= {
+        //将自定义的内容写到module.exports里面
+      }
+      ```
+
+## 路由
+
+### 前端路由的规则
+1. URL的hash
+    * URL的hash也就是锚点(#), 本质上是改变window.location的href属性.
+    * 我们可以通过直接赋值location.hash来改变href, 但是页面不发生刷新 
+2. HTML5的history模式：pushState
+     ```
+     //可返回
+     history.pushState({},'','/foo')
+     ```
+3. HTML5的history模式：replaceState
+     ```
+     //不可返回
+     history.replaceState({},'','/foo')
+     ```
+4. HTML5的history模式：go
+     ```
+     history.go(-1) //返回上一界面
+     history.go(1)  //返回下一界面
+     ```
+5. 补充
+     > 上面只演示了三个方法<br>
+      因为 history.back() 等价于 history.go(-1)<br>
+      history.forward() 则等价于 history.go(1)<br>
+      这三个接口等同于浏览器界面的前进后退。 
+
+### vue-router基础
+
+#### 一、安装和使用vue-router 
+1. 安装vue-router<br>
+     `npm install vue-router --save`（注意：要保证版本匹配）
+2. 使用
+     > 由于本质上是一个插件，所以可以直接用Vue.use()来安装路由功能
+     1. 导入并调用<br>
+     src-router-index.js（自己创建的路径
+        ```
+        import Vue from 'vue
+        import VueRouter from 'vue-router'
+
+        Vue.use(VueRouter)//注入插件
+        ```
+     2. 创建路由实例，并且传入路由映射配置<br>
+     src-router-index.js
+        ```
+        const routes = [];//定义路由
+        const router = new VueRouter({//创建router实例
+          routes
+        })
+        export default router //导出router实例
+        ```
+     3. 在Vue实例中挂载创建的路由实例<br>
+        main.js
+        ```
+        import router from './router'
+        new Vue({
+          el:'#app',
+          router,   //
+          render:h=>h(App)
+        })
+        ```
+
+3. 使用vue-router的步骤
+   1. 创建路由组件
+      * src->components
+      * 创建一个about.vue和一个home.vue
+   2. 配置路由映射。组件和路由的映射关系<br>
+      index.js
+      ```
+      import Home from '../components/home'
+      import about from '../components/about'
+      ···
+      const routes = [
+        {
+          path:'./home',
+          components:home
+        },
+        {
+          path:'./about',
+          components:About
+        }
+      ]
+      ```
+   3. 使用路由：(App.vue)通过`<router-link>`和`<router-view>`
+      * `<router-link>`:该标签是一个vue-router中已经内置的组件，它会被渲染成一个`<a>`标签
+      * `<router-view>`:该标签会根据当前的路径，动态渲染出不同的组件。
+          * 网页的其他内容，比如顶部的标题导航，或者底部的一些版权信息等会和`<router-view>`同一个等级
+          * 在路由切换时，切换的是`<router-view>`挂载的组件，其他内容不会发生改变
+
+4. 其他
+   1. 路由的默认路径<br>
+      不要删除原有的home路径，这个只是重定向
+      ```
+      {
+        path:'/',
+        redirect:'/home'
+      }
+      ```
+   2. HTML5的history模式<br>
+      **我们之前都是采用hash的方式来静态路由跳转的， 但hash方式有一个缺点， 即带有#**
+      ```
+      const router = new VueRouter({
+        routes,
+        mode:'history' //****
+      })
+      ```
