@@ -231,3 +231,75 @@
         mode:'history' //****
       })
       ```
+   3. router-link补充属性
+      * **to** : 指定跳转路径
+      * **tag**: tag可以指定`<router-link>`之后渲染成什么组件, 比如上面的代码会被渲染成一个`<li>`元素, 而不是`<a>`
+      * **replace** : 没有值。replace不会留下history记录, 所以指定replace的情况下, 后退键返回不能返回到上一个页面中
+      * **active-class** : 当<router-link>对应的路由匹配成功时, 会自动给当前元素设置一个**router-link-active**的class, 设置active-class可以修改默认的名称.
+        * 在进行高亮显示的导航菜单或者底部tabbar时, 会使用到该类.
+        * 但是通常不会修改类的属性, 会直接使用默认的router-link-active即可.
+        * 该class具体的名称也可以通过router实例的属性进行修改
+        ```
+        router-index.js-router实例
+        LinkActiveClass:'active'
+        ```
+   4. 路由代码跳转<br>
+      app.vue
+      ```
+      <template>
+        <div>
+          <button @click="btnroute">首页</button>
+          <router-view></router-view>
+        </div>
+      </template>
+      ```
+      ```
+      <script>
+        export default {
+          name:'App',
+          methods:{
+            btnroute(){
+              this.$router.push('./home')
+            }
+          }
+        }
+      </script>
+      ```
+   5.动态路由<br>
+     地址后缀使用动态的获取,使user页面的路由后面跟上id
+    * 创建user.vue
+    * index.js
+      ```
+      {
+        path:'/user/:id',
+        component:User
+      }
+      ```
+    * app.vue
+      ```
+      template
+      <router-link :to="'/user/'+userId">User页面</router-link>
+      ```
+      ```
+      script
+      data(){
+        userId:'XXXX'
+      }
+      ```
+    * 另外 user.vue
+      ```
+      template
+      {{$route.params.id}} 可以获取到userId,script中要加this
+      ```
+### 路由的懒加载
+> 路由懒加载做了什么?<br>
+路由懒加载的主要作用就是将路由对应的组件打包成一个个的js代码块.**只有在这个路由被访问到**的时候, 才加载对应的组件
+  ![lazyload](./img/20200521081730392.png)
+  * app:当前应用程序开发的所有业务代码
+  * manifest:为打包的代码做底层支撑
+  * vendor:第三方插件？
+
+> 懒加载的方式
+  ```
+  const Home = () => import('../components/home')
+  ```
