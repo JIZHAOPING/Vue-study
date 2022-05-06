@@ -303,3 +303,164 @@
   ```
   const Home = () => import('../components/home')
   ```
+  > 我们将代码的引入方式改变了,这样在打包的时候, 会将每一个import进来的文件打包成一个单独的js文件. 如下图所示:
+### 路由的嵌套
+1. 创建子组件
+2. 在index.js中创建组件路由
+    ```
+    //引入子路由-使用懒加载的方式进行加载
+    const HomeBanner = ()=>import('../components/HomeBanner');
+    const HomeNews = () => import('../components/HomeNews');
+
+    {
+      path: "/home",
+      component: Home,
+      children: [{
+        path:'',
+        redirect: 'HomeNew'
+      },{
+        path: 'HomeNew', //注意: 这里面没有/
+        component: HomeNews
+      },{
+        path: 'HomeBanner',
+        component: HomeBanner
+      }]
+    }
+
+    ```
+3. 增加routerlink和routerview
+   * 注意：在routerlink中路径要写全
+## vue参数传递
+#### 1.param方式
+   * 把app.vue中的userid数据传到子组件
+      ```
+      <router-link v-bind:to="'/user/'+userid">user组件</router-link>
+      ```
+   * index.js创建路由的时候定义变量
+      ```
+      {
+        path:'/user/:id',
+        component:
+      }
+      ```
+   * user.vue使用变量
+      ```
+      template:
+      //没有this！！
+      //是route不是router!!
+      //router:是我们index.js创建的那个大的路由对象router
+      //route:当前哪个路由处于活跃状态，获取到的就是哪个路由
+      //params有s!!
+      {{$route.params.id}}   
+      ```
+      ```
+      script
+      data(){
+        return {
+           userid:this.$route.params.userid
+        }
+      }
+      ```
+#### 2. query方式
+注意：
+   * 配置路由的时候是普通配置
+   * 传递的方式是用query的方式，query是一个对象
+1. 创建一个profile组件
+2. 配置路由（普通配置
+3. 渲染组件
+    ```
+    <router-link :to="{
+      path:'/profile',
+      query:{name:'lily',age:18}
+    }">档案</router-link>
+    ```
+4. 获取参数
+   1. 直接语法糖方式：{{$route.params.XXX}}
+   2. 在脚本中获取：this.$route.params.XXX
+## 导航守卫
+> 在vue中, 只有一个index.html页面,如何实现title的改变呢?<br>
+> **有两种方法:**
+> * 第一种, 使用生命周期函数created().
+> * 第二种: 使用全局导航守卫
+### 一、 使用生命周期函数实现页面更新title属性
+在组件内部
+```
+<script>
+    export default {
+        name: "Home",
+      created() {
+          document.title="首页"
+      }
+    }
+</script>
+```
+> 这样有什么问题? 假如现在有100个页面, 我们需要在100个页面中都增加created()函数. 虽然可以实现功能,但似乎有些麻烦, 有没有可以统一修改的办法呢?我们可以使用全局导航守卫实现
+### 二、 使用全局导航守卫的方式更新title属性
+
+#### 1. 在路由index.js增加元数据属性，并设置title属性值
+```
+{
+  path:'/home',
+  component:Home,
+  meta:{
+    title:"首页"
+  }
+}
+```
+#### 2. 在全局路由中设置title属性
+```
+router.beforeEach((to,from,next)=>{
+  document.title = to.macth[0].meta.title;
+  next()
+})
+```
+#### 3. 其他守卫
+  * 全局守卫app.vue
+    * beforeEach、afterEach
+  * 路由独享的守卫 index.js
+    * beforeEnter
+  * 组件内的守卫 XXX.vue
+    * beforeRouterEnter
+    * beforeRouterUpdate
+    * beforeRouterLeave
+## keep-alive
+> 我们有首页, 关于, 用户, 档案. 首页下面有两个按钮[新闻],[消息]<br>当点击首页的[消息], 然后切换到关于页面, 再回到首页的时候, 我们希望能够继续展示[消息]的内容
+<br>默认是不会保留操作的记忆的. 下次回来直接到[首页->新闻], 使用keep-alive就可以有保留记忆的效果了
+
+> 在某一组件内创建created()和destroyed()函数，可以验证每次进入和离开都会创建和销毁组件
+
+#### 如何才能让组件有记忆,而不是每次都重新创建呢？
+```
+在组件展示的位置
+<keep-alive>
+  <router-view></router-view>
+</keep-alive>
+```
+我们看到只有第一次创建了home组件, 后来路由调走, 组件并没有被销毁.
+#### 案例：实现从home-message跳走后，回来还是message的位置
+> 我们可以**让路由调走之前记住当前组件的路由**. 要想实现这个功能,需要了解一下几个钩子函数:<br>这两个函数生效的条件是 : 设置了`<keep-alive>`组件才有效. 也就是说, 组件离开时不销毁.
+  * activated: 路由激活时触发
+  * deactivated: 路由取消激活时触发
+* 在home组件增加两个方法, 一个是activated组件激活的时候重定向路由, 另一个是beforeRouteLeave组件离开前记录离开前的路由
+  ```
+  activated() {
+    // 路由激活, 路由到path路径
+    this.$router.push(this.path)
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log("离开home前的路径 "+this.path)
+    this.path = this.$route.path;
+    next()
+  }
+  ```
+
+#### keep-alive属性
+keep-alive有两个属性: 一个是include, 另一个是exclude
+  * include: 字符串或者正则表达式, 只有匹配的组件才会被缓存
+  * exclude: 字符串或者正则表达式, 匹配到的组件不会被缓存.
+  ```
+  <keep-alive exclude="Profile">
+    <router-view></router-view>
+  </keep-alive>
+  ```
+  这样, Profile组件就不会被缓存了

@@ -10,7 +10,9 @@
       query:{name:'jzp',age:18}
     }">profile页面</router-link>
 
-    <router-view class="content"></router-view>
+    <keep-alive exclude="Profile,User">
+      <router-view class="content"></router-view>
+    </keep-alive>
   </div>
 </template>
 

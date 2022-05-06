@@ -27,7 +27,7 @@ const routes = [
       title:'about'
     },
     beforeEnter:(to,from,next)=>{
-      console.log('路由独享的守卫')
+      console.log('about路由独享的守卫')
     }
   },
   {
