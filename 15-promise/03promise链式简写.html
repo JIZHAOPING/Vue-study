@@ -43,43 +43,23 @@
       console.log(data)
     })
     // 失败简写
-    // new Promise((resolve,reject)=>{
-    //   setTimeout(()=>{
-    //     resolve('1111')
-    //   },1000)
-    // }).then(res=>{
-    //   console.log(res,'第一层')
-    //   // return Promise.reject('error message')
-    //   throw 'error message'
-    // }).then(res=>{
-    //   console.log(res,'第二层')
-    //   return Promise.resolve(res+'bbb')
-    // }).then(res=>{
-    //   console.log(res,'第三层')
-    // }).catch(err=>{
-    //   console.log(err)
-    // })
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('aaa')
-      }, 1000)
-    }).then(res => {
-      // 1.自己处理10行代码
-      console.log(res, '第一层的10行处理代码');
- 
-      // reject失败的简写
+    new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve('1111')
+      },1000)
+    }).then(res=>{
+      console.log(res,'第一层')
       // return Promise.reject('error message')
-      // 失败error的其他写法 手动抛出异常
       throw 'error message'
-    }).then(res => {
-      console.log(res, '第二层的10行处理代码');
- 
-      return Promise.resolve(res + '222')
-    }).then(res => {
-      console.log(res, '第三层的10行处理代码');
-    }).catch(err => {
-      console.log(err);
+    }).then(res=>{
+      console.log(res,'第二层')
+      return Promise.resolve(res+'bbb')
+    }).then(res=>{
+      console.log(res,'第三层')
+    }).catch(err=>{
+      console.log(err)
     })
+    
   </script>
 </body>
 </html>
