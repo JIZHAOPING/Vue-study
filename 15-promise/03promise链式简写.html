@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    // 简写一
+    new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve('HELLO WORLD!')
+      },1000)
+    }).then((data)=>{
+      console.log(data)
+      return Promise.resolve(data+'1111')
+    }).then((data)=>{
+      console.log(data)
+      return Promise.resolve(data+'2222')
+    }).then((data)=>{
+      console.log(data)
+    })
+    // 简写二
+    new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve("Hello World!!!")
+      },1000)
+    }).then(data=>{
+      console.log(data)
+      return data+'111'
+    }).then(data=>{
+      console.log(data)
+      return Promise.reject(data+'error')
+    }).then(data=>{
+      console.log(data)//不会输出
+      return data+'222'
+    }).catch(data=>{
+      console.log(data)
+      return data+'333'
+    }).then(data=>{
+      console.log(data)
+    })
+    // 失败简写
+    // new Promise((resolve,reject)=>{
+    //   setTimeout(()=>{
+    //     resolve('1111')
+    //   },1000)
+    // }).then(res=>{
+    //   console.log(res,'第一层')
+    //   // return Promise.reject('error message')
+    //   throw 'error message'
+    // }).then(res=>{
+    //   console.log(res,'第二层')
+    //   return Promise.resolve(res+'bbb')
+    // }).then(res=>{
+    //   console.log(res,'第三层')
+    // }).catch(err=>{
+    //   console.log(err)
+    // })
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('aaa')
+      }, 1000)
+    }).then(res => {
+      // 1.自己处理10行代码
+      console.log(res, '第一层的10行处理代码');
+ 
+      // reject失败的简写
+      // return Promise.reject('error message')
+      // 失败error的其他写法 手动抛出异常
+      throw 'error message'
+    }).then(res => {
+      console.log(res, '第二层的10行处理代码');
+ 
+      return Promise.resolve(res + '222')
+    }).then(res => {
+      console.log(res, '第三层的10行处理代码');
+    }).catch(err => {
+      console.log(err);
+    })
+  </script>
+</body>
+</html>
