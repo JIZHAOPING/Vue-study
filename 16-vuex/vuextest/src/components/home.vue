@@ -19,7 +19,17 @@
         this.$store.commit('addStu',stu)
       },
       updateclick(){
-        this.$store.commit('updateInfo',{height:168})
+        // this.$store.commit('updateInfo',{height:168})
+        // this.$store.dispatch('aupdateInfo',{
+        //   message:'I am payload',
+        //   success:()=>{
+        //     console.log('里面已经完成了')
+        //   }
+        // })
+        this.$store.dispatch('aupdateInfo','I am payload').then(res=>{
+          console.log('里面已经完成了')
+          console.log(res)
+        })
       }
     }
   }

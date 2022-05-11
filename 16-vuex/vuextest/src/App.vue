@@ -5,19 +5,22 @@
     <h2>-------app组件-------</h2>
     <h3>测试vuex的state</h3>
     <p>{{$store.state.count}}</p>
-    <p v-for="item in mstu" :key="item.id">{{item}}</p>
+    <!-- <p v-for="item in mstu" :key="item.id">{{item}}</p> -->
     <button @click="increment(5)">+5</button>
     <button @click="decrement(10)">-10</button>
     
     
-    <h2>-------home组件-------</h2>
-    <Home />
+    <!-- <h2>-------home组件-------</h2> -->
+    <!-- <Home /> -->
 
+    <h2>-------hello组件-------</h2>
+    <Hello />
   </div>
 </template>
 
 <script>
-import Home from './components/home'
+import Hello from './components/hello'
+// import Home from './components/home'
 export default {
   name: 'App',
   data(){
@@ -27,7 +30,8 @@ export default {
     }
   },
   components:{
-    Home
+    // Home
+    Hello
   },
   methods:{
     increment:function(n){

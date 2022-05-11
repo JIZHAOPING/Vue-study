@@ -3,6 +3,44 @@ import Vue from 'vue'
 
 Vue.use(Vuex)
 
+const moduleA = {
+  state:{
+    title:'hello组件你好',
+    commodities:[
+      {id:101,name:'scooter',price:70,delivery:true,stock:9},
+      {id:102,name:'skateboard',price:200,delivery:false,stock:28},
+      {id:103,name:'swedish goggles',price:35,delivery:true,stock:43},
+      {id:104,name:'tent',price:98,delivery:false,stock:67},
+    ]
+  },
+  getters:{
+    //返回包邮的货品
+    getComdelivery(state){
+      return state.commodities.filter(c=>c.delivery==true)
+    },
+  },
+  mutations:{
+    addStock(state){
+      state.commodities.filter(c=>{
+        return c.stock++
+      })
+    },
+    updateprice(state){
+      state.commodities.filter(c=>{
+        return c.price--
+      })
+    }
+  },
+  actions:{
+    aupdateprice(context){
+      console.log(context)
+      setTimeout(() => {
+        context.commit('updateprice')
+      }, 1000);
+    }
+  }
+}
+
 const store = new Vuex.Store({
   state:{
    count:1000,
@@ -18,6 +56,9 @@ const store = new Vuex.Store({
      age:19
    }
   },
+  modules:{
+    a:moduleA
+  },
   mutations:{
     increment(state,n){
       state.count+=n
@@ -30,8 +71,29 @@ const store = new Vuex.Store({
       state.students.push(stu)
     },
     updateInfo(state,payload){
+      //更新姓名
+      state.info.name = '范冰冰'
       // state.info['height'] = payload.height//不起作用
-      Vue.set(state.info,'height',payload.height)
+      //添加height属性
+      // Vue.set(state.info,'height',payload.height)
+      //删除
+      // Vue.delete(state.info,age)
+    } 
+  },
+  actions:{
+    aupdateInfo(context,payload){
+      // setTimeout(() => {
+      //   context.commit('updateInfo')
+      //   console.log(payload)
+      //   payload.success()
+      // }, 1000);
+      return new Promise((resolve)=>{
+        setTimeout(() => {
+          context.commit('updateInfo')
+          console.log(payload)
+          resolve('good')
+        }, 1000);
+      })
     }
   },
   getters:{
