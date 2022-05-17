@@ -31,6 +31,7 @@
     methods:{
       itemclick(index){
         this.currentindex = index
+        this.$emit('tabClick',index)
       }
     }
   }
@@ -39,6 +40,7 @@
 <style scoped>
 .tabcontrol{
   display: flex;
+  height: 40px;
   line-height: 40px;
   text-align: center;
   font-size: 18px;

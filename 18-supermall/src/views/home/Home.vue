@@ -6,8 +6,10 @@
     <HomeSwiper :banners="banners" />
     <RecommendView :recommends="recommends" />
     <FeatureView/>
-    <TabControl :titles="['流行','新款','精选']" class="tabcontrol" />
-    <ul>
+    <TabControl :titles="['流行','新款','精选']" @tabClick="tabClick" class="tabcontrol" />
+    <GoodsList :goods="showGoods"></GoodsList>
+    <!-- <div>
+      <ul>
       <li>1</li>
       <li>2</li>
       <li>3</li>
@@ -109,6 +111,7 @@
       <li>99</li>
       <li>100</li>
     </ul>
+    </div> -->
     <!-- <h2>首页</h2> -->
   </div>
 </template>
@@ -116,20 +119,27 @@
 <script>
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabcontrol/TabControl'
+import GoodsList from 'components/content/goods/GoodsList'
 
 // import {Swiper,SwiperItem} from 'components/common/swiper/index'
 import HomeSwiper from './childComps/HomeSwiper'
 import RecommendView from './childComps/recommendView'
 import FeatureView from './childComps/FeatureView'
 
-import {getHomedata} from 'network/home'
+import {getHomedata,getHomeGoods} from 'network/home'
 
   export default {
     name:'Home',
     data(){
       return{
         banners:[],
-        recommends:[]
+        recommends:[],
+        goods:{
+          'pop':{page:0,list:[]},
+          'new':{page:0,list:[]},
+          'sell':{page:0,list:[]}
+        },
+        currentgoodtype:'pop'
       }
     },
     components:{
@@ -137,21 +147,62 @@ import {getHomedata} from 'network/home'
       HomeSwiper,
       RecommendView,
       FeatureView,
-      TabControl
+      TabControl,
+      GoodsList
     },
     created(){
-      getHomedata().then(res=>{
-        // console.log(res)
-        this.banners = res.data.banner.list;
-        this.recommends = res.data.recommend.list;
-      })
+      this.getHomedata()
+
+      this.getHomeGoods('pop')
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
+    },
+    computed:{
+      showGoods(){
+        return this.goods[this.currentgoodtype].list
+      }
+    },
+    methods:{
+      tabClick(index){
+        // console.log(index)
+        switch(index){
+          case 0:
+            this.currentgoodtype = 'pop'
+            break
+          case 1:
+            this.currentgoodtype = 'new'
+            break
+          case 2:
+            this.currentgoodtype = 'sell'
+            break
+        }
+      },
+
+
+      /**
+       * 网络请求
+      */
+      getHomedata(){
+        getHomedata().then(res=>{
+          // console.log(res)
+          this.banners = res.data.banner.list;
+          this.recommends = res.data.recommend.list;
+        })
+      },
+      getHomeGoods(type){
+        const page = this.goods[type].page+1
+        getHomeGoods(type,page).then(res=>{
+          this.goods[type].list.push(...res.data.list)
+          this.goods[type].page+=1
+        })
+      }
     }
   }
 </script>
 
 <style scoped>
 .home{
-  padding-top:44px
+  padding-top:44px;
 }
 .homenav{
   position: fixed;
@@ -163,6 +214,8 @@ import {getHomedata} from 'network/home'
 .tabcontrol{
   position: sticky;
   /* display:sticky; */
-  top:44px
+  top:43px;
+  z-index: 98;
 }
+
 </style>
