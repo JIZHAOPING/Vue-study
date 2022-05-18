@@ -64,6 +64,11 @@ import {getHomedata,getHomeGoods} from 'network/home'
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
+
+      this.$bus.$on('imageload',()=>{
+        // console.log('事件总线')
+        this.$refs.scroll.refresh()
+      })
     },
     computed:{
       showGoods(){
