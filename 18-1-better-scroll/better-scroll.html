@@ -15,6 +15,7 @@
 <body>
   <div class="wrapper">
     <ul>
+      <button class="btn">按钮</button>
       <li>列表元素1</li>
       <li>列表元素2</li>
       <li>列表元素3</li>
@@ -121,10 +122,21 @@
 <script src="./better-scroll.js"></script>
 <script>
   const scroll = BetterScroll.createBScroll(document.querySelector('.wrapper'),{
-    probeType:3
+    probeType:3,//实时监听
+    // click:false,//内部可点击
+    pullUpLoad:true,//上拉加载
   })
+  // document.querySelector('.btn').addEventListener('click',function(){
+  //   console.log("按钮点击")
+  // })
   scroll.on('scroll',(position)=>{
-    console.log(position)
+    // console.log(position)
+  })
+  scroll.on('pullingUp',()=>{
+    console.log('上拉加载更多')
+    setTimeout(()=>{
+      scroll.finishPullUp()
+    },2000)
   })
 </script>
 </html>
